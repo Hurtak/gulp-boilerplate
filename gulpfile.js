@@ -16,7 +16,7 @@ const rimraf = require('rimraf');
 gulp.task('default', () => {
 	runSequence(
 		['del'],
-		['scripts', 'scripts:watch', 'tempates', 'tempates:watch'],
+		['scripts', 'scripts:watch', 'tempates', 'tempates:watch', 'styles', 'styles:watch'],
 		['browser-sync']
 	);
 });
@@ -36,6 +36,20 @@ gulp.task('tempates', () =>
 gulp.task('tempates:watch', () => {
 	gulp.watch('./app/index.tempates', ['tempates', browserSync.reload]);
 });
+
+gulp.task('styles', () =>
+	gulp.src('./app/styles/styles.less')
+		.pipe($.sourcemaps.init())
+		.pipe($.less())
+		// .pipe($.minifyCss())
+		.pipe($.sourcemaps.write('.'))
+		.pipe(gulp.dest('./dist/styles'))
+		.pipe(browserSync.stream({match: '**/*.css'}))
+);
+
+gulp.task('styles:watch', () =>
+	gulp.watch('./app/styles/**', ['styles'])
+);
 
 gulp.task('browser-sync', () => {
 	browserSync({
@@ -75,7 +89,9 @@ function scripts(entry, dest, watch) {
 			.pipe($.flatten())
 			.pipe($.sourcemaps.write('.'))
 			.pipe(gulp.dest(dest))
-			.on('end', () => { $.util.log(`Rebundle ${ Date.now() - elapsedTime } ms`); })
+			.on('end', () => {
+				$.util.log(`Rebundle ${ Date.now() - elapsedTime } ms`);
+			})
 			.pipe(browserSync.reload({stream: true}));
 	}
 
