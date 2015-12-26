@@ -15,7 +15,7 @@ const rimraf = require('rimraf');
 
 gulp.task('default', () => {
 	runSequence(
-		['del'],
+		['clear'],
 		['scripts', 'scripts:watch', 'tempates', 'tempates:watch', 'styles', 'styles:watch'],
 		['browser-sync']
 	);
@@ -31,10 +31,11 @@ gulp.task('tempates', () =>
 			collapseWhitespace: true
 		}))
 		.pipe(gulp.dest('./dist'))
+		.pipe(browserSync.reload())
 );
 
 gulp.task('tempates:watch', () => {
-	gulp.watch('./app/index.tempates', ['tempates', browserSync.reload]);
+	gulp.watch('./app/index.tempates', ['tempates']);
 });
 
 gulp.task('styles', () =>
@@ -62,7 +63,7 @@ gulp.task('browser-sync', () => {
 	});
 });
 
-gulp.task('del', cb => rimraf('./dist', cb));
+gulp.task('clear', cb => rimraf('./dist', cb));
 
 function scripts(entry, dest, watch) {
 	const config = {
