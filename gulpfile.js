@@ -13,36 +13,50 @@ const browserSync = require('browser-sync');
 const runSequence = require('run-sequence');
 const rimraf = require('rimraf');
 
-gulp.task('default', () => {
+let distTask = false;
+
+gulp.task('default', ['dev']);
+
+gulp.task('dev', () => {
+	distTask = false;
+	runSequence(['all']);
+});
+
+gulp.task('dist', () => {
+	distTask = true;
+	runSequence(['all']);
+});
+
+gulp.task('all', () =>
 	runSequence(
 		['clear'],
-		['scripts', 'scripts:watch', 'tempates', 'tempates:watch', 'styles', 'styles:watch'],
+		['scripts', 'scripts:watch', 'templates', 'templates:watch', 'styles', 'styles:watch'],
 		['browser-sync']
-	);
-});
+	)
+);
 
 gulp.task('scripts', () => scripts('./app/scripts/app.js', './dist/scripts/', false));
 gulp.task('scripts:watch', () => scripts('./app/scripts/app.js', './dist/scripts/', true));
 
-gulp.task('tempates', () =>
+gulp.task('templates', () =>
 	gulp.src('./app/index.html')
-		.pipe($.htmlmin({
+		.pipe($.if(distTask, $.htmlmin({
 			removeComments: true,
 			collapseWhitespace: true
-		}))
+		})))
 		.pipe(gulp.dest('./dist'))
-		.pipe(browserSync.reload())
+		.pipe(browserSync.reload({stream: true}))
 );
 
-gulp.task('tempates:watch', () => {
-	gulp.watch('./app/index.tempates', ['tempates']);
+gulp.task('templates:watch', () => {
+	gulp.watch('./app/index.html', ['templates']);
 });
 
 gulp.task('styles', () =>
 	gulp.src('./app/styles/styles.less')
 		.pipe($.sourcemaps.init())
 		.pipe($.less())
-		// .pipe($.minifyCss())
+		.pipe($.if(distTask, $.minifyCss()))
 		.pipe($.sourcemaps.write('.'))
 		.pipe(gulp.dest('./dist/styles'))
 		.pipe(browserSync.stream({match: '**/*.css'}))
@@ -86,7 +100,7 @@ function scripts(entry, dest, watch) {
 			.pipe(source(entry))
 			.pipe(buffer())
 			.pipe($.sourcemaps.init({loadMaps: true}))
-			// .pipe($.uglify())
+			.pipe($.if(distTask, $.uglify()))
 			.pipe($.flatten())
 			.pipe($.sourcemaps.write('.'))
 			.pipe(gulp.dest(dest))
