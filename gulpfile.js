@@ -1,17 +1,17 @@
 'use strict';
 
-var gulp = require('gulp');
-var $ = require('gulp-load-plugins')();
+const gulp = require('gulp');
+const $ = require('gulp-load-plugins')();
 
-var browserify = require('browserify');
-var babelify = require('babelify');
-var watchify = require('watchify');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
+const browserify = require('browserify');
+const babelify = require('babelify');
+const watchify = require('watchify');
+const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
 
-var browserSync = require('browser-sync');
-var runSequence = require('run-sequence');
-var rimraf = require('rimraf');
+const browserSync = require('browser-sync');
+const runSequence = require('run-sequence');
+const rimraf = require('rimraf');
 
 gulp.task('default', () => {
 	runSequence(
@@ -51,20 +51,21 @@ gulp.task('browser-sync', () => {
 gulp.task('del', cb => rimraf('./dist', cb));
 
 function scripts(entry, dest, watch) {
-	var config = {
+	const config = {
 		entries: entry,
 		debug: true,
 		transform: [babelify.configure({presets: ['es2015']})]
 	};
 
-	var bundler = watch ? watchify(browserify(config)) : browserify(config);
-	var elapsedTime = Date.now();
+	const bundler = watch ? watchify(browserify(config)) : browserify(config);
+	let elapsedTime = Date.now();
 
 	function rebundle() {
-		var stream = bundler.bundle();
+		const stream = bundler.bundle();
 		return stream
 			.on('error', function (err) {
 				$.util.log($.util.colors.red(`Error: ${ err.message }`));
+				// keeps gulp from hanging when error happens
 				this.emit('end');
 			})
 			.pipe(source(entry))
