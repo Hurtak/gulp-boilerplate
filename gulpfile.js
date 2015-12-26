@@ -1,31 +1,28 @@
 'use strict';
 
 var gulp = require('gulp');
-
 var $ = require('gulp-load-plugins')();
 
+var browserify = require('browserify');
+var babelify = require('babelify');
+var watchify = require('watchify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
-var browserify = require('browserify');
-var watchify = require('watchify');
-var babelify = require('babelify');
 
 var browserSync = require('browser-sync');
 var runSequence = require('run-sequence');
 var rimraf = require('rimraf');
 
-// Tasks
-
 gulp.task('default', () => {
 	runSequence(
 		['del'],
-		['scripts', 'html'],
-		['scripts:watch', 'html:watch', 'browser-sync']
+		['scripts', 'scripts:watch', 'html', 'html:watch'],
+		['browser-sync']
 	);
 });
 
-gulp.task('scripts', () => buildScript('./app/scripts/app.js', './dist/scripts/', false));
-gulp.task('scripts:watch', () => buildScript('./app/scripts/app.js', './dist/scripts/', true));
+gulp.task('scripts', () => scripts('./app/scripts/app.js', './dist/scripts/', false));
+gulp.task('scripts:watch', () => scripts('./app/scripts/app.js', './dist/scripts/', true));
 
 gulp.task('html', () =>
 	gulp.src('./app/index.html')
@@ -46,45 +43,46 @@ gulp.task('browser-sync', () => {
 			baseDir: './dist'
 		},
 		ghostMode: false,
-		port: 8080
+		port: 8080,
+		open: false
 	});
 });
 
 gulp.task('del', cb => rimraf('./dist', cb));
 
-function buildScript(entry, dest, watch) {
-	var props = {
-		entries: [entry],
+function scripts(entry, dest, watch) {
+	var config = {
+		entries: entry,
 		debug: true,
-		transform: [babelify.configure({stage: 0})]
+		transform: [babelify.configure({presets: ['es2015']})]
 	};
 
-	// watchify() if watch requested, otherwise run browserify() once
-	var bundler = watch ? watchify(browserify(props)) : browserify(props);
+	var bundler = watch ? watchify(browserify(config)) : browserify(config);
+	var elapsedTime = Date.now();
 
 	function rebundle() {
 		var stream = bundler.bundle();
 		return stream
 			.on('error', function (err) {
-				console.error(`Error: ${ err.message }`);
+				$.util.log($.util.colors.red(`Error: ${ err.message }`));
 				this.emit('end');
 			})
 			.pipe(source(entry))
 			.pipe(buffer())
 			.pipe($.sourcemaps.init({loadMaps: true}))
 			// .pipe($.uglify())
-			.pipe($.sourcemaps.write('.'))
 			.pipe($.flatten())
+			.pipe($.sourcemaps.write('.'))
 			.pipe(gulp.dest(dest))
+			.on('end', () => { $.util.log(`Rebundle ${ Date.now() - elapsedTime } ms`); })
 			.pipe(browserSync.reload({stream: true}));
 	}
 
 	// listen for an update and run rebundle
 	bundler.on('update', () => {
+		elapsedTime = Date.now();
 		rebundle();
-		$.util.log('Rebundle...');
 	});
 
-	// run it once the first time buildScript is called
-	return rebundle();
+	return watch ? bundler.bundle() : rebundle();
 }
