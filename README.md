@@ -1,6 +1,6 @@
 # Gulp Boilerplate
 
-all you need for development/compilation of simple frontend application
+all you need for development and compilation of simple frontend application
 
 ## Features
 
