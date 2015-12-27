@@ -1,7 +1,6 @@
-# game-of-life
+# gulp boilerplate
 
 #### TODO
 
-- github pages
-- update package JSON with github pages
 - bump version to 1.0.0 once done
+- replace compiled filenames with hash
