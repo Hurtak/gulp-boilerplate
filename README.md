@@ -3,4 +3,5 @@
 #### TODO
 
 - bump version to 1.0.0 once done
-- replace compiled filenames with hash
+- live reload for dist task
+- handle rev transformation (adding hash of file content to the file name) without creating/reading file
