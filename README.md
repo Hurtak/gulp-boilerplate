@@ -6,8 +6,8 @@ all you need for development and compilation of simple frontend application
 
 - starts [local server](https://www.browsersync.io/) with __automatic page reloads__
 - 2 modes
-	- faster dev mode with watching for changed files
-	- distribution mode with minification (css, js, html) and cache busting by changing filenames (more in description below)
+	- __faster dev__ mode with watching for changed files
+	- __distribution mode__ with minification (css, js, html) and cache busting by appending hash to filename
 
 ### Scripts
 
