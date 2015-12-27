@@ -1,29 +1,31 @@
 # Gulp Boilerplate
 
-all you need for develompent/compilation of simple frontend applications
+all you need for develompent/compilation of simple frontend application
 
 ## Features
 
+- automatically start [local server](https://www.browsersync.io/) with automatic page reloads
+
 ### Scripts
 
-- when files change incrementally rebuild and reload browser
+- when files change incrementally rebuild and reload page
 - [sourcemaps](https://github.com/floridoo/gulp-sourcemaps)
-- [minify](https://github.com/mishoo/UglifyJS2) (only in dist mode)
-- cache busting by appending of the file content to the filename (styles.css -> styles-a2c27fc283.css)
+- [minification](https://github.com/mishoo/UglifyJS2) (only in dist mode)
+- cache busting by appending hash of the file content to the filename (styles.css -> styles-a2c27fc283.css)
 
 ### Styles
 
-- inject new styles into the page without page reload when files change
+- when files change, inject new styles into the page without reload
+- [less](https://github.com/less/less.js) as preprocesor (can easily be replace with [SASS](https://github.com/sass) or anything else)
 - [sourcemaps](https://github.com/floridoo/gulp-sourcemaps)
-- [minify](https://github.com/jakubpawlowicz/clean-css) (only in dist mode)
-- [autoprefix](https://github.com/postcss/autoprefixer)
-- cache busting by appending of the file content to the filename (app.js -> app-3bb897e475.js)
+- [minification](https://github.com/jakubpawlowicz/clean-css) (only in dist mode)
+- [autoprefixer](https://github.com/postcss/autoprefixer)
+- cache busting by appending hash of the file content to the filename (app.js -> app-3bb897e475.js)
 
 ### HTML
 
-- watch for change and automatically reload browser
-- cache busting by appending hash content of the file to the filename (app.js -> app-3bb897e475.js)
-- minify html
+- watch for change and automatically reload page
+- [minify html](https://github.com/kangax/html-minifier)
 
 ## How to use
 
@@ -51,7 +53,6 @@ gulp
 
 ## TODO
 
-- bump version to 1.0.0 once done
 - live reload for dist task
 - handle rev transformation (adding hash of file content to the file name) without creating/reading file
 - task for images?
