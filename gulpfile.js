@@ -19,34 +19,40 @@ gulp.task('default', ['dev']);
 
 gulp.task('dev', () => {
 	distTask = false;
-	runSequence(['all']);
+	runSequence(
+		['clear'],
+		['scripts', 'scripts:watch', 'styles', 'styles:watch', 'templates', 'templates:watch'],
+		['browser-sync']
+	);
 });
 
 gulp.task('dist', () => {
 	distTask = true;
-	runSequence(['all']);
-});
-
-gulp.task('all', () =>
 	runSequence(
 		['clear'],
-		['scripts', 'scripts:watch', 'templates', 'templates:watch', 'styles', 'styles:watch'],
-		['browser-sync']
-	)
-);
+		['scripts', 'styles'],
+		['templates', 'browser-sync']
+	);
+});
 
 gulp.task('scripts', () => scripts('./app/scripts/app.js', './dist/scripts/', false));
 gulp.task('scripts:watch', () => scripts('./app/scripts/app.js', './dist/scripts/', true));
 
-gulp.task('templates', () =>
+gulp.task('templates', () => {
+	const manifest = distTask ? require('./dist/rev-manifest.json') : '';
+
 	gulp.src('./app/index.html')
+		.pipe($.if(distTask, $.revManifestReplace({
+		    base: '.',
+		    manifest: manifest
+		})))
 		.pipe($.if(distTask, $.htmlmin({
 			removeComments: true,
 			collapseWhitespace: true
 		})))
 		.pipe(gulp.dest('./dist'))
-		.pipe(browserSync.stream())
-);
+		.pipe(browserSync.stream());
+});
 
 gulp.task('templates:watch', () => {
 	gulp.watch('./app/index.html', ['templates']);
@@ -57,8 +63,11 @@ gulp.task('styles', () =>
 		.pipe($.sourcemaps.init())
 		.pipe($.less())
 		.pipe($.if(distTask, $.minifyCss()))
+		.pipe($.if(distTask, $.rev()))
 		.pipe($.sourcemaps.write('.'))
 		.pipe(gulp.dest('./dist/styles'))
+		.pipe($.if(distTask, $.rev.manifest('dist/rev-manifest.json', {base: './dist', merge: true})))
+		.pipe($.if(distTask, gulp.dest('./dist')))
 		.pipe(browserSync.stream({match: '**/*.css'}))
 );
 
@@ -102,8 +111,11 @@ function scripts(entry, dest, watch) {
 			.pipe($.sourcemaps.init({loadMaps: true}))
 			.pipe($.if(distTask, $.uglify()))
 			.pipe($.flatten())
+			.pipe($.if(distTask, $.rev()))
 			.pipe($.sourcemaps.write('.'))
 			.pipe(gulp.dest(dest))
+			.pipe($.if(distTask, $.rev.manifest('dist/rev-manifest.json', {base: './dist', merge: true})))
+			.pipe($.if(distTask, gulp.dest('./dist')))
 			.on('end', () => {
 				$.util.log(`Rebundle ${ Date.now() - elapsedTime } ms`);
 			})
