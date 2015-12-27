@@ -15,20 +15,20 @@ all you need for development/compilation of simple frontend application
 - write your __javascript in ES6, modules (ES6 imports/exports) supported__
 - [sourcemaps](https://github.com/floridoo/gulp-sourcemaps)
 - [minification](https://github.com/mishoo/UglifyJS2) (only in dist mode)
-- cache busting by appending hash of the file content to the filename (styles.css -> styles-a2c27fc283.css)
+- cache busting by appending hash of the file content to the filename (styles.css → styles-a2c27fc283.css)
 
 ### Styles
 
 - when files change, __inject new styles into the page without reload__
 - [less](https://github.com/less/less.js) as preprocessor (can easily be replace with [SASS](https://github.com/sass) or anything else)
+- [autoprefixer](https://github.com/postcss/autoprefixer)
 - [sourcemaps](https://github.com/floridoo/gulp-sourcemaps)
 - [minification](https://github.com/jakubpawlowicz/clean-css) (only in dist mode)
-- [autoprefixer](https://github.com/postcss/autoprefixer)
-- cache busting by appending hash of the file content to the filename (app.js -> app-3bb897e475.js)
+- cache busting by appending hash of the file content to the filename (app.js → app-3bb897e475.js)
 
 ### HTML
 
-- watch for change and automatically reload page
+- watch for changes and automatically reload page
 - [minify html](https://github.com/kangax/html-minifier)
 
 ## How to use
@@ -50,7 +50,7 @@ gulp
 - `gulp` (alias for `gulp dev`) starts development mode
 	- starts server at `http://localhost:8080`
 	- watches for file changes
-	- skips minification of files and replacing of filenames (app.js -> app-3bb897e475.js)
+	- skips minification of files and replacing of filenames (app.js → app-3bb897e475.js)
 
 - `gulp dist` starts distribution mode
 	- starts server at `http://localhost:8080`
@@ -62,3 +62,4 @@ gulp
 - live reload for dist task
 - handle rev transformation (adding hash of file content to the file name) without creating/reading file
 - task for images?
+- incremental builds also for css?
