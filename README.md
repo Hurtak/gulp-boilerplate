@@ -4,18 +4,19 @@ all you need for develompent/compilation of simple frontend application
 
 ## Features
 
-- automatically start [local server](https://www.browsersync.io/) with automatic page reloads
+- automatically start [local server](https://www.browsersync.io/) with __automatic page reloads__
 
 ### Scripts
 
 - when files change incrementally rebuild and reload page
+- write your __javascript in ES6, modules (imports/exports) supported__
 - [sourcemaps](https://github.com/floridoo/gulp-sourcemaps)
 - [minification](https://github.com/mishoo/UglifyJS2) (only in dist mode)
 - cache busting by appending hash of the file content to the filename (styles.css -> styles-a2c27fc283.css)
 
 ### Styles
 
-- when files change, inject new styles into the page without reload
+- when files change, __inject new styles into the page without reload__
 - [less](https://github.com/less/less.js) as preprocesor (can easily be replace with [SASS](https://github.com/sass) or anything else)
 - [sourcemaps](https://github.com/floridoo/gulp-sourcemaps)
 - [minification](https://github.com/jakubpawlowicz/clean-css) (only in dist mode)
@@ -30,6 +31,8 @@ all you need for develompent/compilation of simple frontend application
 ## How to use
 
 - install [node.js](https://nodejs.org/en/) and npm (bundled with node.js)
+- see simple example app inside `./app` directory
+- files are compiled into `./dist` directory from with they are also server by development web server
 
 ```
 git clone https://github.com/Hurtak/gulp-boilerplate.git
