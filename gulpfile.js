@@ -62,6 +62,7 @@ gulp.task('styles', () =>
 	gulp.src('./app/styles/styles.less')
 		.pipe($.sourcemaps.init())
 		.pipe($.less())
+		.on('error', handleError)
 		.pipe($.autoprefixer({browsers: ['last 2 versions', 'Firefox ESR', 'ie >= 9']}))
 		.pipe($.if(distTask, $.minifyCss()))
 		.pipe($.if(distTask, $.rev()))
@@ -102,11 +103,7 @@ function scripts(entry, dest, watch) {
 	function rebundle() {
 		const stream = bundler.bundle();
 		return stream
-			.on('error', function (err) {
-				$.util.log($.util.colors.red(`Error: ${ err.message }`));
-				// keeps gulp from hanging when error happens
-				this.emit('end');
-			})
+			.on('error', handleError)
 			.pipe(source(entry))
 			.pipe(buffer())
 			.pipe($.sourcemaps.init({loadMaps: true}))
@@ -130,4 +127,10 @@ function scripts(entry, dest, watch) {
 	});
 
 	return watch ? bundler.bundle() : rebundle();
+}
+
+function handleError(err) {
+	$.util.log($.util.colors.red(`Error: ${ err.message }`));
+	// keeps gulp from hanging when error happens
+	this.emit('end');
 }
