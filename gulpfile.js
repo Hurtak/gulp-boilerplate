@@ -62,6 +62,7 @@ gulp.task('styles', () =>
 	gulp.src('./app/styles/styles.less')
 		.pipe($.sourcemaps.init())
 		.pipe($.less())
+		.pipe($.autoprefixer({browsers: ['last 2 versions', 'Firefox ESR', 'ie >= 9']}))
 		.pipe($.if(distTask, $.minifyCss()))
 		.pipe($.if(distTask, $.rev()))
 		.pipe($.sourcemaps.write('.'))
