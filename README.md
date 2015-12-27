@@ -5,6 +5,9 @@ all you need for develompent/compilation of simple frontend application
 ## Features
 
 - automatically start [local server](https://www.browsersync.io/) with __automatic page reloads__
+- 2 modes
+	- faster dev mode with watching for changed files
+	- distribution mode with minification (css, js, html) and cache busting by changing filenames (more in description below)
 
 ### Scripts
 
