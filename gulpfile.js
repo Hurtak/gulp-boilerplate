@@ -9,7 +9,7 @@ const watchify = require('watchify');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 
-const browserSync = require('browser-sync');
+const browserSync = require('browser-sync').create();
 const runSequence = require('run-sequence');
 const rimraf = require('rimraf');
 
@@ -45,7 +45,7 @@ gulp.task('templates', () =>
 			collapseWhitespace: true
 		})))
 		.pipe(gulp.dest('./dist'))
-		.pipe(browserSync.reload({stream: true}))
+		.pipe(browserSync.stream())
 );
 
 gulp.task('templates:watch', () => {
@@ -67,7 +67,7 @@ gulp.task('styles:watch', () =>
 );
 
 gulp.task('browser-sync', () => {
-	browserSync({
+	browserSync.init({
 		server: {
 			baseDir: './dist'
 		},
@@ -107,7 +107,7 @@ function scripts(entry, dest, watch) {
 			.on('end', () => {
 				$.util.log(`Rebundle ${ Date.now() - elapsedTime } ms`);
 			})
-			.pipe(browserSync.reload({stream: true}));
+			.pipe(browserSync.stream());
 	}
 
 	// listen for an update and run rebundle
