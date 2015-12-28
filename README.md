@@ -40,8 +40,24 @@ all you need for development and compilation of simple frontend application
 ```
 git clone https://github.com/Hurtak/gulp-boilerplate.git
 cd gulp-boilerplate
+```
+
+install dependencies
+
+```
+make install
+```
+
+or if you don't have makefile
+
+```
 npm install gulp -g
 npm install
+```
+
+profit
+
+```
 gulp
 ```
 
