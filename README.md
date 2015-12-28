@@ -33,35 +33,17 @@ all you need for development and compilation of simple frontend application
 
 ## How to use
 
+### Installation
+
 - install [node.js](https://nodejs.org/en/) and npm (bundled with node.js)
+- install dependencies by running `npm install gulp -g && npm install` or `make install`
+
+### Application structure
+
 - see simple example app inside `./app` directory
-- files are compiled into `./dist` directory from with they are also server by development web server
+- files are compiled into `./dist` directory from which they are also served
 
-```
-git clone https://github.com/Hurtak/gulp-boilerplate.git
-cd gulp-boilerplate
-```
-
-install dependencies
-
-```
-make install
-```
-
-or if you don't have makefile
-
-```
-npm install gulp -g
-npm install
-```
-
-profit
-
-```
-gulp
-```
-
-### Tasks
+### Gulp tasks
 
 - `gulp` (alias for `gulp dev`) starts development mode
 	- starts server at `http://localhost:8080`
