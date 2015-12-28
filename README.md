@@ -15,7 +15,7 @@ all you need for development and compilation of simple frontend application
 - write your __javascript in ES6, modules (ES6 imports/exports) supported__
 - [sourcemaps](https://github.com/floridoo/gulp-sourcemaps)
 - [minification](https://github.com/mishoo/UglifyJS2) (only in dist mode)
-- cache busting by appending hash of the file content to the filename (styles.css → styles-a2c27fc283.css)
+- cache busting by appending hash of the file content to the filename, styles.css → styles-a2c27fc283.css (only in dist mode)
 
 ### Styles
 
@@ -24,7 +24,7 @@ all you need for development and compilation of simple frontend application
 - [autoprefixer](https://github.com/postcss/autoprefixer)
 - [sourcemaps](https://github.com/floridoo/gulp-sourcemaps)
 - [minification](https://github.com/jakubpawlowicz/clean-css) (only in dist mode)
-- cache busting by appending hash of the file content to the filename (app.js → app-3bb897e475.js)
+- cache busting by appending hash of the file content to the filename, app.js → app-3bb897e475.js (only in dist mode)
 
 ### HTML
 
