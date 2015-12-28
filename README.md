@@ -20,7 +20,7 @@ all you need for development and compilation of simple frontend application
 ### Styles
 
 - when files change, __inject new styles into the page without reload__
-- [less](https://github.com/less/less.js) as preprocessor (can easily be replace with [SASS](https://github.com/sass) or anything else)
+- [less](https://github.com/less/less.js) as preprocessor (can easily be replace with [sass](https://github.com/sass) or anything else)
 - [autoprefixer](https://github.com/postcss/autoprefixer)
 - [sourcemaps](https://github.com/floridoo/gulp-sourcemaps)
 - [minification](https://github.com/jakubpawlowicz/clean-css) (only in dist mode)
