@@ -57,6 +57,7 @@ all you need for development and compilation of simple frontend application
 
 ## TODO
 
+- task for tests
 - live reload for dist task
 - handle rev transformation (adding hash of file content to the file name) without creating/reading json file from FS
 - task for images?
