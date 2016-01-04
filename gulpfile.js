@@ -62,8 +62,8 @@ function templates(entry, dest) {
 
 	return gulp.src(entry)
 		.pipe($.if(distTask, $.revManifestReplace({
-		    base: '.',
-		    manifest: manifest
+			base: '.',
+			manifest: manifest
 		})))
 		.pipe($.if(distTask, $.htmlmin({
 			removeComments: true,
@@ -85,7 +85,7 @@ function styles(entry, dest) {
 		.pipe(gulp.dest(dest))
 		.pipe($.if(distTask, $.rev.manifest('dist/rev-manifest.json', {base: './dist', merge: true})))
 		.pipe($.if(distTask, gulp.dest('./dist')))
-		.pipe(browserSync.stream({match: '**/*.css'}))
+		.pipe(browserSync.stream({match: '**/*.css'}));
 }
 
 function scripts(entry, dest, watch) {
