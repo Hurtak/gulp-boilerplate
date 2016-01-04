@@ -38,44 +38,13 @@ gulp.task('dist', () => {
 gulp.task('scripts', () => scripts('./app/scripts/app.js', './dist/scripts/', false));
 gulp.task('scripts:watch', () => scripts('./app/scripts/app.js', './dist/scripts/', true));
 
-gulp.task('templates', () => {
-	const manifest = distTask ? require('./dist/rev-manifest.json') : '';
+gulp.task('templates', () => templates('./app/index.html', './dist'));
+gulp.task('templates:watch', () => gulp.watch('./app/index.html', ['templates']));
 
-	gulp.src('./app/index.html')
-		.pipe($.if(distTask, $.revManifestReplace({
-		    base: '.',
-		    manifest: manifest
-		})))
-		.pipe($.if(distTask, $.htmlmin({
-			removeComments: true,
-			collapseWhitespace: true
-		})))
-		.pipe(gulp.dest('./dist'))
-		.pipe(browserSync.stream());
-});
+gulp.task('styles', () => styles('./app/styles/styles.less', './dist/styles'));
+gulp.task('styles:watch', () => gulp.watch('./app/styles/**', ['styles']));
 
-gulp.task('templates:watch', () => {
-	gulp.watch('./app/index.html', ['templates']);
-});
-
-gulp.task('styles', () =>
-	gulp.src('./app/styles/styles.less')
-		.pipe($.sourcemaps.init())
-		.pipe($.less())
-		.on('error', handleError)
-		.pipe($.autoprefixer({browsers: ['last 2 versions', 'Firefox ESR', 'ie >= 9']}))
-		.pipe($.if(distTask, $.minifyCss()))
-		.pipe($.if(distTask, $.rev()))
-		.pipe($.sourcemaps.write('.'))
-		.pipe(gulp.dest('./dist/styles'))
-		.pipe($.if(distTask, $.rev.manifest('dist/rev-manifest.json', {base: './dist', merge: true})))
-		.pipe($.if(distTask, gulp.dest('./dist')))
-		.pipe(browserSync.stream({match: '**/*.css'}))
-);
-
-gulp.task('styles:watch', () =>
-	gulp.watch('./app/styles/**', ['styles'])
-);
+gulp.task('clear', cb => rimraf('./dist', cb));
 
 gulp.task('browser-sync', () => {
 	browserSync.init({
@@ -88,7 +57,36 @@ gulp.task('browser-sync', () => {
 	});
 });
 
-gulp.task('clear', cb => rimraf('./dist', cb));
+function templates(entry, dest) {
+	const manifest = distTask ? require('./dist/rev-manifest.json') : '';
+
+	return gulp.src(entry)
+		.pipe($.if(distTask, $.revManifestReplace({
+		    base: '.',
+		    manifest: manifest
+		})))
+		.pipe($.if(distTask, $.htmlmin({
+			removeComments: true,
+			collapseWhitespace: true
+		})))
+		.pipe(gulp.dest(dest))
+		.pipe(browserSync.stream());
+}
+
+function styles(entry, dest) {
+	return gulp.src(entry)
+		.pipe($.sourcemaps.init())
+		.pipe($.less())
+		.on('error', handleError)
+		.pipe($.autoprefixer({browsers: ['last 2 versions', 'Firefox ESR', 'ie >= 9']}))
+		.pipe($.if(distTask, $.minifyCss()))
+		.pipe($.if(distTask, $.rev()))
+		.pipe($.sourcemaps.write('.'))
+		.pipe(gulp.dest(dest))
+		.pipe($.if(distTask, $.rev.manifest('dist/rev-manifest.json', {base: './dist', merge: true})))
+		.pipe($.if(distTask, gulp.dest('./dist')))
+		.pipe(browserSync.stream({match: '**/*.css'}))
+}
 
 function scripts(entry, dest, watch) {
 	const config = {
