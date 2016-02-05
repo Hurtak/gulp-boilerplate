@@ -1,6 +1,6 @@
 {
-  "name": "hurtak-gulp-boilerplate",
-  "version": "1.0.0",
+  "name": "hurtak-frontend-boilerplate",
+  "version": "2.0.0",
   "description": "all you need for develompent/compilation of simple frontend application",
   "dependencies": {},
   "devDependencies": {
