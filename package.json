@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "description": "all you need for develompent/compilation of simple frontend application",
   "scripts": {
+    "clean": "rimraf ./dist",
     "scripts": "webpack --progress --config build/webpack.config.js"
   },
   "dependencies": {},
