@@ -1,11 +1,13 @@
 
+const path = require('path')
+
 module.exports = {
 
-  entry: './app/scripts/app.js',
+  entry: path.resolve(__dirname, '../app/scripts/app.js'),
 
   output: {
     filename: 'app.js',
-    path: './dist/scripts'
+    path: path.resolve(__dirname, '../dist/scripts')
   },
 
   module: {
