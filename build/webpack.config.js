@@ -1,14 +1,18 @@
-
 const path = require('path')
 
 module.exports = {
 
-  entry: path.resolve(__dirname, '../app/scripts/app.js'),
+  entry: [
+    // 'babel-polyfill',
+    path.resolve(__dirname, '../app/scripts/app.js')
+  ],
 
   output: {
     filename: 'app.js',
     path: path.resolve(__dirname, '../dist/scripts')
   },
+
+  devtool: 'source-map',
 
   module: {
     loaders: [
@@ -17,8 +21,14 @@ module.exports = {
         exclude: /(node_modules|bower_components)/,
         loader: 'babel',
         query: {
-          presets: ['es2015', 'stage-2'],
-          plugins: ['transform-runtime', 'transform-regenerator'],
+          presets: [
+            'stage-0',
+            'es2015'
+          ],
+          plugins: [
+            // 'transform-runtime',
+            'transform-strict-mode'
+          ],
           cacheDirectory: true
         }
       }
