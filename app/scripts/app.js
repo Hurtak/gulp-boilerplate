@@ -5,12 +5,23 @@ console.log('console log from app.js')
 defaultImport()
 namedImport()
 
-const x = { a: 1, b: 2, c: { ca: 1 } }
-const y = {
-  ...x,
-  b: 10
+console.log('\n\n\n')
+
+const obj1 = { a: 1, b: 2, c: { ca: 1, cb: 2 } }
+const obj2 = {
+  ...obj1,
+  c: {
+    ...obj1.c,
+    ca: 1000
+  }
 }
+console.log('object rest/spread', obj2)
 
-console.log(y)
+console.log('\n\n\n')
 
-console.log(pre)
+const asyncFuntion = async () => {
+  await new Promise(resolve => setTimeout(resolve, 500))
+  console.log('correct error line numbers even in async functions:')
+  console.log(undefinedVariable)
+}
+asyncFuntion()
