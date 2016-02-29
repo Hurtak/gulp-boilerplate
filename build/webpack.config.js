@@ -1,11 +1,11 @@
 const path = require('path')
 
-const __DEV__ = false
+const __DEV__ = true
 
 module.exports = {
 
   entry: [
-    // 'babel-polyfill',
+    ...(__DEV__ ? [] : ['babel-polyfill']),
     path.resolve(__dirname, '../app/scripts/app.js')
   ],
 
@@ -48,15 +48,15 @@ module.exports = {
             ...(__DEV__ ? [
               'transform-async-to-generator'
             ] : [
-              "transform-async-to-generator",
+              'transform-async-to-generator',
               'transform-regenerator',
-              "transform-runtime",
+              'transform-runtime'
             ]),
 
             'transform-exponentiation-operator',
             'transform-object-rest-spread',
 
-            'transform-strict-mode',
+            'transform-strict-mode'
           ],
           cacheDirectory: true
         }
